@@ -1,4 +1,4 @@
-import { sql, AUTH_READING_RLS_POLICY } from '../config/config.ts';
+import { sql } from '../config/config.ts';
 import { nanoid } from 'nanoid';
 import type { ILink, errorResponse } from '../types/TypeLink.ts';
 

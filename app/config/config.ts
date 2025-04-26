@@ -9,5 +9,3 @@ database.connect().catch((err) => {
 })
 
 export const sql = database
-
-export const AUTH_READING_RLS_POLICY = process.env.AUTH_READING_RLS_POLICY!
