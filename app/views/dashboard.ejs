@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Acortador de Enlaces | CodeGeekery Link</title>
+    <meta name="description"
+        content="Acorta y personaliza tus enlaces fácilmente con CodeGeekery Link. Gestiona tus URLs de forma rápida, sencilla y segura.">
+
+    <!-- Favicon -->
+    <link rel="icon" href="/asset/favicon.ico" type="image/x-icon">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://link.codegeekery.com/">
+    <meta property="og:title" content="Acortador de Enlaces | CodeGeekery Link">
+    <meta property="og:description"
+        content="Acorta y gestiona tus URLs fácilmente con CodeGeekery Link, el mejor acortador de enlaces.">
+    <meta property="og:image" content="https://link.codegeekery.com/OG_OPENGRAPH.png">
+
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://link.codegeekery.com/">
+    <meta property="twitter:title" content="Acortador de Enlaces | CodeGeekery Link">
+    <meta property="twitter:description"
+        content="Acorta y personaliza tus enlaces con CodeGeekery Link. Rápido, sencillo y confiable.">
+    <meta property="twitter:image" content="https://link.codegeekery.com/OG_OPENGRAPH.png">
+
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+
+<body>
+    <div class="shortener-container">
+        <h1 class="shortener-title">ACORTADOR DE URL</h1>
+        <form id="urlShortenerForm">
+            <div class="form-group">
+                <label for="originalUrl">URL ORIGINAL</label>
+                <input type="text" id="originalUrl" name="originalUrl" placeholder="https://ejemplo.com/larga/url" />
+            </div>
+
+            <div class="form-group">
+                <label for="customHash">HASH PERSONALIZADO</label>
+                <input type="text" id="customHash" name="customHash" placeholder="mi-enlace" pattern="[a-zA-Z0-9-]+"
+                    title="Solo letras, números y guiones" />
+            </div>
+
+            <div class="form-group">
+                <label for="authCode">CÓDIGO DE AUTENTICACIÓN</label>
+                <input type="password" id="authCode" name="authCode" placeholder="••••••••" />
+            </div>
+
+            <button type="submit" class="submit-btn">ACORTAR URL</button>
+        </form>
+
+        <div class="all-urls-container">
+            <h2>TODAS LAS URL ACORTADAS</h2>
+            <ul id="urlsList" class="urls-list"></ul>
+        </div>
+    </div>
+
+    <script type="module" src="/static/Handlers.js"></script>
+</body>
+
+</html>

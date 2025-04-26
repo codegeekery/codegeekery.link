@@ -1,0 +1,27 @@
+{
+  "name": "codegeekery_link",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "app/index.ts",
+  "scripts": {
+    "dev": "node --env-file=.env --watch app/index.ts",
+    "build": "tsc",
+    "start": "node dist/app/index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "nanoid": "^5.1.5",
+    "pg": "^8.15.5"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.15.0",
+    "@types/pg": "^8.11.14",
+    "typescript": "^5.8.3"
+  }
+}
