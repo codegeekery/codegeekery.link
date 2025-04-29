@@ -37,6 +37,8 @@
     <div class="shortener-container">
         <h1 class="shortener-title">ACORTADOR DE URL</h1>
         <form id="urlShortenerForm">
+            <!-- General Message Errors -->
+            <div id="generalError" class="error-message"></div>
             <div class="form-group">
                 <label for="originalUrl">URL ORIGINAL</label>
                 <input type="text" id="originalUrl" name="originalUrl" placeholder="https://ejemplo.com/larga/url" />
@@ -44,8 +46,7 @@
 
             <div class="form-group">
                 <label for="customHash">HASH PERSONALIZADO</label>
-                <input type="text" id="customHash" name="customHash" placeholder="mi-enlace" pattern="[a-zA-Z0-9-]+"
-                    title="Solo letras, números y guiones" />
+                <input type="text" id="customHash" name="customHash" placeholder="mi-enlace" />
             </div>
 
             <div class="form-group">

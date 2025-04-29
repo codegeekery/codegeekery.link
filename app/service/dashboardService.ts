@@ -4,7 +4,7 @@ import type { ILink, errorResponse } from '../types/TypeLink.ts';
 
 const HASH_LENGTH = 8;
 
-export async function createShortUrl(originalUrl: string, authCode?: string): Promise<ILink> {
+export async function createShortUrl(originalUrl: string, authCode?: string, customHash?: string): Promise<ILink> {
     const errors: errorResponse = [];
 
     // Validación de URL
@@ -28,7 +28,8 @@ export async function createShortUrl(originalUrl: string, authCode?: string): Pr
         throw errors;
     }
 
-    const hash = nanoid(HASH_LENGTH);
+    // Usa el customHash si está, sino genera uno aleatorio
+    const hash = customHash || nanoid(HASH_LENGTH);
     const createdAt = new Date();
 
     await sql.query(`
@@ -44,10 +45,9 @@ export async function createShortUrl(originalUrl: string, authCode?: string): Pr
         createdAt
     ]);
 
-
-
     return { originalUrl, hash, createdAt };
 }
+
 
 
 export async function getAllUrls(): Promise<ILink[]> {
@@ -62,7 +62,7 @@ export async function getAllUrls(): Promise<ILink[]> {
                 created_at as "createdAt"
             FROM links
         `);
-        
+
 
         // Si el resultado tiene un valor, devuelve solo la URL como string
         return result.rows || [];
@@ -99,26 +99,40 @@ export async function getUrlByHash(hash: string): Promise<string | null> {
             FROM links
             WHERE hash = $1
         `, [hash]);
-        
+
         // Si el resultado tiene un valor, devuelve solo la URL como string
         return result.rows[0]?.originalUrl || null;
     } catch (error) {
-        console.error('Error obteniendo URL por hash:', error);
         return null;
     }
 }
 
 // Delete URL by hash
-export async function deleteUrlByHash(hash: string): Promise<void> {
-    try {
-        await sql.query(`
-            DELETE FROM links
-            WHERE hash = $1
-        `, [hash]);
-    } catch (error) {
-        console.error('Error eliminando URL por hash:', error);
+export async function deleteUrlByHash(hash: string, authCode: string): Promise<void> {
+    const errors: errorResponse = [];
+
+    // Validación manual de authCode
+    const { rows } = await sql.query(`
+        SELECT 1
+        FROM auth
+        WHERE code = $1
+    `, [authCode]);
+
+    if (rows.length === 0) {
+        errors.push({ field: 'authCode', message: 'Invalid AuthCode' });
     }
+
+    if (errors.length > 0) {
+        throw errors;
+    }
+
+    // Eliminación de la URL
+    await sql.query(`
+        DELETE FROM links
+        WHERE hash = $1
+    `, [hash]);
 }
+
 
 
 export const dashboardService = {

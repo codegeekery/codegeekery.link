@@ -50,9 +50,29 @@ export async function fetchAllUrls() {
             deleteBtn.className = 'delete-btn';
             deleteBtn.textContent = 'Eliminar';
             deleteBtn.onclick = async () => {
-                await deleteUrl(item.hash);
-                fetchAllUrls();
+                const authCode = document.getElementById('authCode').value;
+
+                // Limpia errores anteriores
+                document.querySelectorAll('.error-message').forEach(e => e.remove());
+                document.querySelectorAll('.form-group').forEach(e => e.classList.remove('error'));
+
+                try {
+                    await deleteUrl(item.hash, authCode);
+                    fetchAllUrls();
+                } catch (errors) {
+                    errors.forEach(error => {
+                        const el = document.getElementById(error.field);
+                        if (el) {
+                            const div = document.createElement('div');
+                            div.className = 'error-message';
+                            div.textContent = error.message;
+                            el.parentNode.appendChild(div);
+                            el.parentNode.classList.add('error');
+                        }
+                    });
+                }
             };
+
 
             // Insertamos el span y el botón dentro del div
             contentWrapper.appendChild(span);

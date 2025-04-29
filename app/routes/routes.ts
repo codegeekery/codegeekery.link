@@ -14,8 +14,8 @@ router.get('/', getDashboard);
 
 router.post('/api/shorten', async (req: Request, res: Response): Promise<void> => {
     try {
-        const { originalUrl, authCode } = req.body;
-        const result = await dashboardService.createShortUrl(originalUrl, authCode);
+        const { originalUrl, authCode, customHash } = req.body;
+        const result = await dashboardService.createShortUrl(originalUrl, authCode, customHash);
 
         res.status(200).json(result);
     } catch (error) {
@@ -54,15 +54,23 @@ router.get('/:hash', async (req: Request, res: Response) => {
     }
 });
 
-router.delete('/:hash', async (req: Request, res: Response) => {
-    const { hash } = req.params;
+router.delete('/:hash/:authCode', async (req: Request, res: Response): Promise<void> => {
+    const { hash, authCode } = req.params;
+
+    if (!authCode) {
+        res.status(400).json({ errors: [{ field: 'authCode', message: 'AuthCode is required' }] });
+        return;
+    }
+
     try {
-        await dashboardService.deleteUrlByHash(hash);
-        res.status(204).send(); // No content
+        await dashboardService.deleteUrlByHash(hash, authCode);
+        res.status(200).json({ message: 'URL eliminada correctamente' });
     } catch (error) {
-        res.status(500).json({ error: 'Error al eliminar la URL' });
+        res.status(500).json({ errors: [{ field: 'general', message: 'Server Error Internal' }] });
     }
 });
+
+
 
 
 export default router;
