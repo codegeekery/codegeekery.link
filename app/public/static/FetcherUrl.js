@@ -18,44 +18,43 @@ export async function fetchAllUrls() {
         }
 
         data.forEach(item => {
-            const shortUrl = `${window.location.origin}/${item.hash}`;
-
+            const shortUrl = `link.codegeekery.com/${item.hash}`;
+        
             const li = document.createElement('li');
             li.classList.add('url-item');
-
-            // Nuevo div para organizar internamente (flex)
+        
+            // Div wrapper
             const contentWrapper = document.createElement('div');
-            contentWrapper.className = 'url-content-wrapper';
-
+            contentWrapper.className = 'url-content-wrapper'; // clase flex
+        
+            // El span
             const span = document.createElement('span');
-            span.textContent = shortUrl;
+            span.textContent = item.hash;
             span.className = 'short-url';
-
-            // Al hacer clic en el enlace, copiar al portapapeles
+        
             span.addEventListener('click', async function () {
                 try {
                     await navigator.clipboard.writeText(shortUrl);
                     span.textContent = '¡Copiado!';
                     setTimeout(() => {
-                        span.textContent = shortUrl;
+                        span.textContent = item.hash;
                     }, 2000);
                 } catch (err) {
                     console.error('Error al copiar:', err);
                     alert('Error al copiar el enlace. Intenta manualmente.');
                 }
             });
-
-            // Botón de eliminar
+        
+            // Botón eliminar
             const deleteBtn = document.createElement('button');
             deleteBtn.className = 'delete-btn';
             deleteBtn.textContent = 'Eliminar';
             deleteBtn.onclick = async () => {
                 const authCode = document.getElementById('authCode').value;
-
-                // Limpia errores anteriores
+        
                 document.querySelectorAll('.error-message').forEach(e => e.remove());
                 document.querySelectorAll('.form-group').forEach(e => e.classList.remove('error'));
-
+        
                 try {
                     await deleteUrl(item.hash, authCode);
                     fetchAllUrls();
@@ -72,23 +71,24 @@ export async function fetchAllUrls() {
                     });
                 }
             };
-
-
-            // Insertamos el span y el botón dentro del div
+        
+            // Insertamos el span y el botón dentro del mismo contentWrapper
             contentWrapper.appendChild(span);
             contentWrapper.appendChild(deleteBtn);
-
-            // Insertamos el div dentro del li
+        
+            // Insertamos el contentWrapper dentro del li
             li.appendChild(contentWrapper);
-
-            // Insertamos el li dentro de la lista
+        
+            // Insertamos el li en la lista
             list.appendChild(li);
         });
+        
     } catch (err) {
         const list = document.getElementById('urlsList');
         list.innerHTML = `<li>Error al cargar las URLs: ${err.message}</li>`;
     }
 }
+
 
 // Cargar URLs automáticamente al cargar la página
 window.addEventListener('DOMContentLoaded', fetchAllUrls);
