@@ -116,7 +116,7 @@ El proyecto incluye:
 
 - **Dockerfile** para empaquetado en contenedores.
 - **docker-compose.yml** para levantar entornos locales rápidamente.
-- **GitHub Actions** para automatizar despliegues y pruebas.
+- **GitHub Actions** para automatizar despliegues
 
 ---
 

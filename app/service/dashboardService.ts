@@ -110,7 +110,6 @@ export async function getUrlByHash(hash: string): Promise<string | null> {
 // Delete URL by hash
 export async function deleteUrlByHash(hash: string, authCode: string): Promise<void> {
     const errors: errorResponse = [];
-
     // Validación manual de authCode
     const { rows } = await sql.query(`
         SELECT 1

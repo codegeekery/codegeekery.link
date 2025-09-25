@@ -1,21 +1,12 @@
 export async function deleteUrl(hash, authCode) {
-    try {
-        const response = await fetch(`/${hash}/${authCode}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
+    const res = await fetch(`/${hash}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ authCode }),
+    });
 
-        const result = await response.json();
-
-        if (!response.ok) {
-            throw result.errors;
-        }
-
-        return result;
-    } catch (err) {
-        throw err;
-    }
+    if (!res.ok) throw await res.json();
+    return res.json();
 }
+
 

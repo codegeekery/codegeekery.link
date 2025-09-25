@@ -54,19 +54,21 @@ router.get('/:hash', async (req: Request, res: Response) => {
     }
 });
 
-router.delete('/:hash/:authCode', async (req: Request, res: Response): Promise<void> => {
-    const { hash, authCode } = req.params;
+
+router.delete('/:hash', async (req: Request, res: Response) => {
+    const { hash } = req.params;
+    const { authCode } = req.body;
 
     if (!authCode) {
-        res.status(400).json({ errors: [{ field: 'authCode', message: 'AuthCode is required' }] });
+        res.status(400).json({ errors: [{ field: 'authCode', message: 'AuthCode is required for deletion of URLs' }] });
         return;
     }
 
     try {
         await dashboardService.deleteUrlByHash(hash, authCode);
-        res.status(200).json({ message: 'URL eliminada correctamente' });
-    } catch (error) {
-        res.status(500).json({ errors: [{ field: 'general', message: 'Server Error Internal' }] });
+        res.status(200).json({ message: `URL with hash ${hash} deleted successfully` });
+    } catch (errors) {
+        res.status(400).json({ errors });
     }
 });
 
