@@ -42,7 +42,8 @@ router.get('/api/urls', async (req: Request, res: Response) => {
 router.get('/:hash', async (req: Request, res: Response) => {
     const { hash } = req.params;
     try {
-        const url = await dashboardService.getUrlByHash(hash);
+        // obtener el hash en minuscula
+        const url = await dashboardService.getUrlByHash(hash.toLocaleLowerCase());
         if (url) {
             // Redirige al cliente a la URL asociada con el hash
             res.redirect(url);
