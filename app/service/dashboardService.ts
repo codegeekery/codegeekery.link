@@ -18,6 +18,7 @@ export async function createShortUrl(originalUrl: string, authCode?: string, cus
         }
     }
 
+    
     // Validación del código de autenticación
     const isValid = await isValidAuthCode(authCode || '');
     if (!isValid) {

@@ -1,4 +1,4 @@
-import type { Request, Response } from 'express';
+import type { Request, Response, NextFunction } from 'express';
 import { Router } from 'express';
 
 // importar vista dashboard
@@ -39,8 +39,8 @@ router.get('/api/urls', async (req: Request, res: Response) => {
     }
 });
 
-router.get('/:hash', async (req: Request, res: Response) => {
-    const { hash } = req.params;
+router.get('/:hash', async (req: Request, res: Response, next:NextFunction) => {
+    const {hash}  = req.params;
     try {
         // obtener el hash en minuscula
         const url = await dashboardService.getUrlByHash(hash.toLocaleLowerCase());
@@ -48,7 +48,7 @@ router.get('/:hash', async (req: Request, res: Response) => {
             // Redirige al cliente a la URL asociada con el hash
             res.redirect(url);
         } else {
-            res.status(404).json({ error: 'URL not found' });
+           return next(); 
         }
     } catch (error) {
         res.status(500).json({ error: 'Error al obtener la URL' });

@@ -1,24 +1,32 @@
 import express from 'express';
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
+import { join } from 'path';
 import router from './routes/routes.ts';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Configuración de middleware
+// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(join(__dirname, 'public'))); // Solo archivos estáticos (CSS, JS, imágenes)
 
-// Configuración de EJS
+// 🔧 Usa la raíz del proyecto para static y views
+app.use(express.static(join(process.cwd(), 'app', 'public')));
+
+// EJS
 app.set('view engine', 'ejs');
-app.set('views', join(__dirname, 'app', 'views')); // Ajusta esta ruta según tu estructura
+app.set('views', join(process.cwd(), 'app', 'views')); // <-- clave
 
 // Rutas
 app.use('/', router);
+
+// 404 (después de TODAS las rutas)
+app.use((req, res) => {
+  res.status(404).render('404'); // renderiza app/views/404.ejs
+});
+
+
+
 
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
